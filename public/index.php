@@ -46,6 +46,10 @@ $container['view'] = function ($c) {
     $view = new \Slim\Views\Twig(realpath(APP_ROOT . '/view'), $opt);
     $basePath = rtrim(str_ireplace('index.php', '', $c['request']->getUri()->getBasePath()), '/');
     $view->addExtension(new \Slim\Views\TwigExtension($c['router'], $basePath));
+
+    $twig = $view->getEnvironment();
+    $twig->addGlobal('env_log_level', getenv('LOG_LEVEL'));
+
     return $view;
 };
 
