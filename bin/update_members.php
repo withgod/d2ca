@@ -25,7 +25,7 @@ try {
 
 
     if (\D2ca\Helper::membersUpdateBatchCount($clan_id) > 1) {
-        $tmp = `ps auxfwww | grep update_members.php`;
+        $tmp = `ps auxfw | grep [u]pdate_members.php | grep -v sudo | grep $clan_id`;
         $logger->error('update batch already running', [$tmp]);
         exit;
     }

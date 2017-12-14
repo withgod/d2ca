@@ -55,7 +55,7 @@ class Helper
 
     public static function membersUpdateBatchCount($clan_id)
     {
-        $result = `ps auxfw | grep [u]pdate_members.php | grep $clan_id | wc -l`;
+        $result = `ps auxfw | grep [u]pdate_members.php | grep $clan_id | grep -v sudo | wc -l`;
         return trim($result);
     }
 
