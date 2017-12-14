@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-lg-12 text-left">
+            <ul class="list-unstyled">
+                <li><A href="https://bungie-net.github.io/multi/index.html">D2 API</a>を利用してクランメンバーのラストログインを表示します。</li>
+                <li>ログインしたユーザの所属クランのみです。</li>
+                <li>ログイン時にメンバ一覧の最終更新時刻を見て、1時間以上前なら更新を行います。(1時間以内の場合は更新されません。)</li>
+                <li>tokenはユーザセッションには保存していますが、rdbへの永続化は行っていません。 </li>
+                <li>ソースコードはgithubに置いています。</li>
+            </ul>
+        </div>
+        <div class="col-lg-12 text-center">
+            <form action="login" id="login">
+            {% if user %}
+            <button type="button" class="btn btn-secondary btn-block">logged in as {{user.name}} / {{user.clan_name}}</button>
+            <script>
+                $("#login .btn-secondary").click(function() {
+                    window.location.href = '/d2ca/group/{{user.clan_id}}';
+                });
+            </script>
+            {% else %}
+                <button type="button" class="btn btn-primary btn-block">login with Bungie.net</button>
+            <script>
+                $("#login .btn-primary").click(function() {
+                    $("#login").submit();
+                });
+            </script>
+            {% endif %}
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

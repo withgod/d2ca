@@ -1,0 +1,31 @@
+{
+    "name": "withgod/d2clan_manager",
+    "authors": [
+        {
+            "name": "withgod",
+            "email": "noname@withgod.jp"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/withgod/destiny2-php"
+        }
+    ],
+    "require": {
+        "slim/slim": "^3.0",
+        "league/oauth2-client": "^2.2",
+        "twig/twig": "~2.0",
+        "richard4339/destiny2-php": "dev-feature_more_functions ",
+        "slim/twig-view": "^2.3",
+        "vlucas/phpdotenv": "^2.4",
+        "bryanjhv/slim-session": "~3.0",
+        "monolog/monolog": "^1.23",
+        "j4mie/paris": "^1.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "D2ca\\" : "src/"
+        }
+    }
+}

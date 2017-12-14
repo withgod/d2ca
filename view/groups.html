@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 text-left">
+        <h2>Groups</h2>
+        <ul>
+            {% for group in groups %}
+            <li>
+                <a href="/d2ca/group/{{group.clan_id}}">{{ group.clan_name }} ({{group.members_count}}/100)</a> / {{group.members_updated_at}}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
