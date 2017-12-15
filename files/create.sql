@@ -31,3 +31,5 @@ create table if not exists members(
 	deleted_at TIMESTAMP default '0000-00-00 00:00:00',
 	FOREIGN KEY (clan_id) REFERENCES clans(clan_id)
 );
+
+alter table members add index idx_d2uid(d2_uid);
