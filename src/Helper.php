@@ -31,7 +31,7 @@ class Helper
                 }
             } else {
                 $prefix = 'unknown';
-                if (strstr(PHP_SAPI, 'apache') !== false) {
+                if (strstr(PHP_SAPI, 'apache') !== false || PHP_SAPI === 'fpm-fcgi') {
                     $prefix = 'app';
                 }
                 $output = "[%datetime%] %remote_address% %request_method% %request_uri% %level_name%: %message% %context% %extra%\n";
