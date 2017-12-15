@@ -14,23 +14,41 @@ class Helper
     {
         if (static::$logger == null) {
             $logger = new \Monolog\Logger('d2ca');
-            $output = "[%datetime%] %remote_address% %request_method% %request_uri% %level_name%: %message% %context% %extra%\n";
-            $formatter = new \Monolog\Formatter\LineFormatter($output, null, true);
+            if (PHP_SAPI === 'cli') {
+                $formatter = new \Monolog\Formatter\LineFormatter(null, null, true);
+                $stream = new \Monolog\Handler\StreamHandler(sprintf("%s/logs/cli.%s.log", APP_ROOT, date("Ymd")), getenv('LOG_LEVEL'));
+                $stream->setFormatter($formatter);
 
-            $stream = new \Monolog\Handler\StreamHandler(sprintf("%s/logs/%s.log", APP_ROOT, date("Ymd")), getenv('LOG_LEVEL'));
-            $stream->setFormatter($formatter);
-            $logger->pushProcessor(function ($record) {
+                $logger->pushHandler($stream);
 
-                $record['remote_address'] = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
-                $record['request_uri'] = $_SERVER['REQUEST_URI'] ?? '-1';
-                if (php_sapi_name() == 'cli') {
-                    $record['request_uri']  = 'cli';
+                // console detection
+                if(defined("STDERR") && posix_isatty(STDERR)){
+                    /* console output */
+                    $console = new \Monolog\Handler\StreamHandler(STDOUT, getenv('LOG_LEVEL'));
+                    $console->setFormatter($formatter);
+
+                    $logger->pushHandler($console);
                 }
-                $record['request_method'] = $_SERVER['REQUEST_METHOD'] ?? 'None';
+            } else {
+                $prefix = 'unknown';
+                if (strstr(PHP_SAPI, 'apache') !== false) {
+                    $prefix = 'app';
+                }
+                $output = "[%datetime%] %remote_address% %request_method% %request_uri% %level_name%: %message% %context% %extra%\n";
+                $formatter = new \Monolog\Formatter\LineFormatter($output, null, true);
 
-                return $record;
-            });
-            $logger->pushHandler($stream);
+                $stream = new \Monolog\Handler\StreamHandler(sprintf("%s/logs/%s.%s.log", APP_ROOT, $prefix, date("Ymd")), getenv('LOG_LEVEL'));
+                $stream->setFormatter($formatter);
+                $logger->pushProcessor(function ($record) {
+                    $record['remote_address'] = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+                    $record['request_uri'] = $_SERVER['REQUEST_URI'] ?? '-1';
+                    $record['request_method'] = $_SERVER['REQUEST_METHOD'] ?? 'None';
+
+                    return $record;
+                });
+                $logger->pushHandler($stream);
+            }
+
             static::$logger = $logger;
         }
 
