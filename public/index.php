@@ -79,7 +79,7 @@ $app->get('/group/{groupid}', function  (Request $request, Response $response) {
     $members = \D2ca\Helper::getMembers($groupid);
     $updating = \D2ca\Helper::membersUpdateBatchCount($groupid) ? true : false;
 
-    return $this->view->render($response, 'group.html', ['members' => $members, 'updating' => $updating]);
+    return $this->view->render($response, 'group.html', ['group' => $clan, 'members' => $members, 'updating' => $updating]);
 });
 
 $app->get('/logout', function (Request $request, Response $response) {
@@ -152,7 +152,9 @@ $app->get('/', function (Request $request, Response $response) {
         $this->logger->debug('user already logged in as[' . $user->displayName() . '(' . $user->membershipId() . ')]');
         $user = ['name' => $user->displayName(), 'clan_name' => $clan['name'], 'clan_id' => $clan['groupId']];
     }
-    return $this->view->render($response, 'top.html', ['user' => $user]);
+
+    $clans = \D2ca\Helper::getClans();
+    return $this->view->render($response, 'top.html', ['user' => $user, 'groups' => $clans]);
 });
 
 $app->run();
