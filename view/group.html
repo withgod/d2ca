@@ -2,12 +2,18 @@
 {% block content %}
 <div class="row">
     <div class="col-lg-12 text-left">
-        <h2>{{group.clan_name}}</h2>
         {% if updating %}
         <div class="alert alert-danger" role="alert">
             <strong>currently updating</strong> please reload after few sec.
         </div>
         {% endif %}
+        <h2>{{group.clan_name}}</h2>
+        <ul>
+            <li>total user {{group.members_count}}</li>
+            <li>active members in last week {{group.members_count_last_week}}</li>
+            <li>active members in last month {{group.members_count_last_month}}</li>
+            <li><a href="https://www.bungie.net/ja/ClanV2/Chat?groupId={{group.clan_id}}">official</a></li>
+        </ul>
         <table id="members" class="table table-striped table-bordered dt-responsive nowrap"  cellspacing="0" width="100%">
             <thead>
             <tr>

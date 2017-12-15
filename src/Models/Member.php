@@ -27,4 +27,10 @@ class Member extends \Model
     public function clan() {
         return $this->has_one('Clan', 'clan_id');
     }
+
+    public function last_played() {
+        $arr = [$this->hunter_last_played, $this->titan_last_played, $this->warlock_last_played];
+        rsort($arr);
+        return $arr[0];
+    }
 }

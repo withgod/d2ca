@@ -3,6 +3,8 @@
 namespace D2ca;
 
 
+use D2ca\Models\Member;
+
 class Helper
 {
     /* @var $logger \Monolog\Logger */
@@ -102,6 +104,7 @@ class Helper
         $members = \Model::factory('Member')->where('clan_id', $clan_id)->find_many();
         $result = [];
         foreach ($members as $member) {
+            /* @var $member Member */
             $tmp = $member->as_array();
             if ($tmp['titan_last_played'] == '0000-00-00 00:00:00') {
                 $tmp['titan_last_played'] = null;
@@ -112,10 +115,8 @@ class Helper
             if ($tmp['hunter_last_played'] == '0000-00-00 00:00:00') {
                 $tmp['hunter_last_played'] = null;
             }
-            $last_played_all = [$tmp['titan_last_played'], $tmp['warlock_last_played'], $tmp['hunter_last_played']];
-            rsort($last_played_all);
 
-            $tmp['all_last_played'] = $last_played_all[0];
+            $tmp['all_last_played'] = $member->last_played();
             //ar_dump([$tmp, $last_played_all]);
             $result[] = $tmp;
         }
@@ -129,6 +130,8 @@ class Helper
         if (!empty($clan)) {
             $tmp = $clan->as_array();
             $tmp['members_count'] = $clan->members_count();
+            $tmp['members_count_last_week'] = $clan->members_count_last_week();
+            $tmp['members_count_last_month'] = $clan->members_count_last_month();
             return $tmp;
         } else {
             return NULL;
@@ -141,6 +144,8 @@ class Helper
         foreach ($clans as $clan) {
             $tmp = $clan->as_array();
             $tmp['members_count'] = $clan->members_count();
+            $tmp['members_count_last_week'] = $clan->members_count_last_week();
+            $tmp['members_count_last_month'] = $clan->members_count_last_month();
             $result[] = $tmp;
         }
 
