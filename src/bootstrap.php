@@ -13,6 +13,8 @@ ORM::configure('username', getenv("DB_USER"));
 ORM::configure('password', getenv("DB_PASS"));
 Model::$auto_prefix_models = '\\D2ca\\Models\\';
 Model::$short_table_names = true;
+ORM::configure('caching', true);
+ORM::configure('caching_auto_clear', true);
 if (getenv('LOG_LEVEL') == 'Logger::DEBUG') {
     ORM::configure('logging', true);
     ORM::configure('logger', function($log_string, $query_time) {
