@@ -23,6 +23,10 @@ class Clan extends \Model
     {
         return $this->has_many('Member', 'clan_id', 'clan_id')->count();
     }
+    public function members_count_last_2week()
+    {
+        return $this->members_count_expr('interval -14 day');
+    }
     public function members_count_last_week()
     {
         return $this->members_count_expr('interval -7 day');

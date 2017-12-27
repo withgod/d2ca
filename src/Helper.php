@@ -144,7 +144,8 @@ class Helper
         foreach ($clans as $clan) {
             $tmp = $clan->as_array();
             $tmp['members_count'] = $clan->members_count();
-            $tmp['members_count_last_week'] = $clan->members_count_last_week();
+            $tmp['members_count_last_week']  = $clan->members_count_last_week();
+            $tmp['members_count_last_2week'] = $clan->members_count_last_2week();
             $tmp['members_count_last_month'] = $clan->members_count_last_month();
             $result[] = $tmp;
         }

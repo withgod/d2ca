@@ -2,7 +2,7 @@
     <thead>
     <tr class="text-center">
         <th rowspan="2">clan name</th>
-        <th colspan="3">members</th>
+        <th colspan="4">members</th>
         <th rowspan="2">registerd at</th>
         <th rowspan="2">members updated at</th>
         <th rowspan="2">official</th>
@@ -10,6 +10,7 @@
     <tr>
         <th>total</th>
         <th>1month active</th>
+        <th>14days active</th>
         <th>7days active</th>
     </tr>
     </thead>
@@ -19,6 +20,7 @@
         <td><a href="/d2ca/group/{{group.clan_id}}">{{ group.clan_name }}</a></td>
         <td>{{group.members_count}}</td>
         <td>{{group.members_count_last_month}}</td>
+        <td>{{group.members_count_last_2week}}</td>
         <td>{{group.members_count_last_week}}</td>
         <td>{{group.created_at}}</td>
         <td>{{group.members_updated_at}}</td>
