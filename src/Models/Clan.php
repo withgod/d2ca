@@ -17,11 +17,11 @@ class Clan extends \Model
 
     public function members()
     {
-        return $this->has_many('Member', 'clan_id', 'clan_id');
+        return $this->has_many('Member', 'clan_id', 'clan_id')->where('deleted_at', '0000-00-00 00:00:00');
     }
     public function members_count()
     {
-        return $this->has_many('Member', 'clan_id', 'clan_id')->count();
+        return $this->members()->count();
     }
     public function members_count_last_2week()
     {

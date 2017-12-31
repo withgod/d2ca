@@ -101,7 +101,9 @@ class Helper
     public static function getMembers($clan_id)
     {
 
-        $members = \Model::factory('Member')->where('clan_id', $clan_id)->find_many();
+        $clan = \Model::factory('Clan')->where('clan_id', $clan_id)->find_one();
+        $members = $clan->members()->find_many();
+
         $result = [];
         foreach ($members as $member) {
             /* @var $member Member */

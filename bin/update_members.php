@@ -36,6 +36,8 @@ try {
     $members = $client->getClanMembers($clan_id);
     $logger->info("update_members.php sarted [" . $clan_id . '/' . $user->displayName() . '/' . $user->membershipId() . ']');
 
+    # current members
+    $members_d2_uid = [];
     /* @var $member \Destiny\Objects\GroupMember */
     foreach ($members as $member) {
         $dinfo = $member->destinyUserInfo();
@@ -101,6 +103,19 @@ try {
         $user_model->hunter_last_played = $h_played;
 
         $user_model->save();
+        $members_d2_uid[] = $destiny_membershipid;
+    }
+    $not_updated_members = \Model::factory('Member')
+        ->where('clan_id', $clan_id)
+        ->where_not_in('d2_uid', $members_d2_uid)
+        ->where_raw('created_at <= NOW() - INTERVAL 5 MINUTE')
+        ->find_many();
+    $logger->info("delete leaved members.");
+    $logger->info("current member list [" . count($members_d2_uid) . "]", $members_d2_uid);
+    foreach ($not_updated_members as $member) {
+        $logger->info("delete member", [$member->d2_name, $member->d2_uid, $member->created_at]);
+        $member->set_expr('deleted_at', 'current_timestamp');
+        $member->save();
     }
 
 } catch(Exception $e) {
