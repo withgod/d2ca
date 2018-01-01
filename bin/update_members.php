@@ -59,6 +59,12 @@ try {
         $characters = $profile->characters();
         /* @var $character \Destiny\Objects\DestinyCharacterComponent */
         list ($t_level, $t_played, $w_level, $w_played, $h_level, $h_played) = [0, '', 0, '', 0, ''];
+        usort($characters, function($a, $b) {
+            if ($a->dateLastPlayed() == $b->dateLastPlayed()) {
+                return 0;
+            }
+            return ($a->dateLastPlayed() <= $b->dateLastPlayed()) ? -1 : 1;
+        });
         foreach ($characters as $character) {
             $class = $character->classType() == NULL ? 0 : $character->classType();
             $class = $classes[$class];
