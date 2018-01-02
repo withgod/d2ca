@@ -17,9 +17,15 @@ class Helper
         if (static::$logger == null) {
             $logger = new \Monolog\Logger('d2ca');
             if (PHP_SAPI === 'cli') {
-                $formatter = new \Monolog\Formatter\LineFormatter(null, null, true);
+                $output = "[%datetime%] %process_id% %level_name%: %message% %context% %extra%\n";
+                $formatter = new \Monolog\Formatter\LineFormatter($output, null, true);
                 $stream = new \Monolog\Handler\StreamHandler(sprintf("%s/logs/cli.%s.log", APP_ROOT, date("Ymd")), getenv('LOG_LEVEL'));
                 $stream->setFormatter($formatter);
+                $logger->pushProcessor(function ($record) {
+                    $record['process_id'] = getmypid();
+
+                    return $record;
+                });
 
                 $logger->pushHandler($stream);
 
