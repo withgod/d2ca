@@ -114,6 +114,7 @@ try {
     $not_updated_members = \Model::factory('Member')
         ->where('clan_id', $clan_id)
         ->where_not_in('d2_uid', $members_d2_uid)
+        ->where('deleted_at', '0000-00-00 00:00:00')
         ->where_raw('created_at <= NOW() - INTERVAL 5 MINUTE')
         ->find_many();
     $logger->info("delete leaved members.");
@@ -123,6 +124,7 @@ try {
         $member->set_expr('deleted_at', 'current_timestamp');
         $member->save();
     }
+    $logger->info("update_members.php stopped");
 
 } catch(Exception $e) {
     $logger->error("update_members.php have problem", [$e->getMessage()]);
